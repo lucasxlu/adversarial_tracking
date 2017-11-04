@@ -5,9 +5,10 @@ configs['use_gpu'] = True
 
 # configs['init_model_path'] = '../models/imagenet-vgg-m.mat'
 configs['init_model_path'] = '/home/lucasx/ModelZoo/imagenet-vgg-m.mat'
+configs['img_home'] = '/media/lucasx/Document/DataSet/CV/Tracking'
 configs['model_path'] = '../models/adnet_vot-otb.pth'
 
-configs['batch_frames'] = 1
+configs['batch_frames'] = 8
 configs['batch_pos'] = 32
 configs['batch_neg'] = 96
 
@@ -57,5 +58,3 @@ configs['overlap_neg_update'] = [0, 0.3]
 configs['n_frames_short'] = 20
 configs['n_frames_long'] = 100
 configs['long_interval'] = 10
-
-configs['img_home'] = '/media/lucasx/Document/DataSet/CV/Tracking'

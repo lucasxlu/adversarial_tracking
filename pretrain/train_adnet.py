@@ -11,7 +11,6 @@ from utils.data_prov import RegionDataset
 from utils.config import configs
 from tracking.model import *
 
-# img_home = '../dataset/'
 data_path = 'data/vot-otb.pkl'
 
 
