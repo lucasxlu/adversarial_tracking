@@ -14,12 +14,12 @@ from torch.autograd import Variable
 import torchvision
 
 
-def load_seq():
+def load_seq(option_json_path='./options.json'):
     """
     load sequences and groundtruth
     :return:
     """
-    with open('./options.json', mode='rt') as fp:
+    with open(option_json_path, mode='rt') as fp:
         options = json.load(fp)
         sequence = options['sequence']
 

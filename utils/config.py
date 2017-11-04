@@ -7,7 +7,7 @@ configs['use_gpu'] = True
 configs['init_model_path'] = '/home/lucasx/ModelZoo/imagenet-vgg-m.mat'
 configs['model_path'] = '../models/adnet_vot-otb.pth'
 
-configs['batch_frames'] = 8
+configs['batch_frames'] = 1
 configs['batch_pos'] = 32
 configs['batch_neg'] = 96
 
@@ -28,7 +28,7 @@ configs['n_cycles'] = 50
 
 configs['n_bbreg'] = 1000
 configs['overlap_bbreg'] = [0.6, 1]
-configs['scale_bbreg'] = [1, 2]
+configs['scale_bbreg'] = [0.5, 2]  # [1, 2]
 
 configs['batch_test'] = 256
 
