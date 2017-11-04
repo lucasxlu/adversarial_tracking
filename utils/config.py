@@ -57,3 +57,5 @@ configs['overlap_neg_update'] = [0, 0.3]
 configs['n_frames_short'] = 20
 configs['n_frames_long'] = 100
 configs['long_interval'] = 10
+
+configs['img_home'] = '/media/lucasx/Document/DataSet/CV/Tracking'

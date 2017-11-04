@@ -12,7 +12,6 @@ from utils.config import configs
 from tracking.model import *
 
 # img_home = '../dataset/'
-img_home = '/media/lucasx/Document/DataSet/CV/Tracking'
 data_path = 'data/vot-otb.pkl'
 
 
@@ -39,7 +38,7 @@ def train_adnet():
     for k, (seqname, seq) in enumerate(data.items()):
         img_list = seq['images']
         gt = seq['gt']
-        img_dir = os.path.join(img_home, seqname)
+        img_dir = os.path.join(configs['img_home'], seqname)
         dataset[k] = RegionDataset(img_dir, img_list, gt, configs)
 
     # Init model
