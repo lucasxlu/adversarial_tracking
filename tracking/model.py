@@ -47,45 +47,45 @@ class LRN(nn.Module):
 class ADNet(nn.Module):
     def __init__(self, model_path=None):
         super(ADNet, self).__init__()
-        self.layers = nn.Sequential(OrderedDict([
-            ('conv1', nn.Sequential(nn.Conv2d(3, 96, kernel_size=7, stride=2),
-                                    nn.ReLU(),
-                                    # LRN(),
-                                    nn.MaxPool2d(kernel_size=3, stride=2))),
-            ('conv2', nn.Sequential(nn.Conv2d(96, 256, kernel_size=5, stride=2),
-                                    nn.ReLU(),
-                                    # LRN(),
-                                    nn.MaxPool2d(kernel_size=3, stride=2))),
-            ('conv3', nn.Sequential(nn.Conv2d(256, 512, kernel_size=3, stride=1),
-                                    nn.ReLU())),
-            ('conv4', nn.Sequential(nn.Conv2d(512, 1024, kernel_size=2, stride=1),
-                                    nn.ReLU())),
-            ('conv5', nn.Sequential(nn.Conv2d(1024, 512, kernel_size=1, stride=1),
-                                    nn.ReLU(),
-                                    # LRN(),
-                                    nn.MaxPool2d(kernel_size=2, stride=1))),
-            ('fc6', nn.Sequential(nn.Dropout(0.5),
-                                  nn.Linear(512, 2)))]))
         # self.layers = nn.Sequential(OrderedDict([
         #     ('conv1', nn.Sequential(nn.Conv2d(3, 96, kernel_size=7, stride=2),
         #                             nn.ReLU(),
-        #                             LRN(),
+        #                             # LRN(),
         #                             nn.MaxPool2d(kernel_size=3, stride=2))),
         #     ('conv2', nn.Sequential(nn.Conv2d(96, 256, kernel_size=5, stride=2),
         #                             nn.ReLU(),
-        #                             LRN(),
+        #                             # LRN(),
         #                             nn.MaxPool2d(kernel_size=3, stride=2))),
         #     ('conv3', nn.Sequential(nn.Conv2d(256, 512, kernel_size=3, stride=1),
         #                             nn.ReLU())),
-        #     ('conv4', nn.Sequential(nn.Conv2d(512, 512, kernel_size=2, stride=1),
+        #     ('conv4', nn.Sequential(nn.Conv2d(512, 1024, kernel_size=2, stride=1),
+        #                             nn.ReLU())),
+        #     ('conv5', nn.Sequential(nn.Conv2d(1024, 512, kernel_size=1, stride=1),
         #                             nn.ReLU(),
+        #                             LRN(),
         #                             nn.MaxPool2d(kernel_size=2, stride=1))),
-        #     ('fc5', nn.Sequential(nn.Dropout(0.5),
-        #                           nn.Linear(512, 256),
-        #                           nn.ReLU())),
         #     ('fc6', nn.Sequential(nn.Dropout(0.5),
-        #                           nn.Linear(256, 2),
-        #                           nn.ReLU()))]))
+        #                           nn.Linear(512, 2)))]))
+
+        self.layers = nn.Sequential(OrderedDict([
+            ('conv1', nn.Sequential(nn.Conv2d(3, 96, kernel_size=7, stride=2),
+                                    nn.ReLU(),
+                                    LRN(),
+                                    nn.MaxPool2d(kernel_size=3, stride=2))),
+            ('conv2', nn.Sequential(nn.Conv2d(96, 256, kernel_size=5, stride=2),
+                                    nn.ReLU(),
+                                    LRN(),
+                                    nn.MaxPool2d(kernel_size=3, stride=2))),
+            ('conv3', nn.Sequential(nn.Conv2d(256, 512, kernel_size=3, stride=1),
+                                    nn.ReLU())),
+            ('fc4', nn.Sequential(nn.Dropout(0.5),
+                                  nn.Linear(512 * 3 * 3, 512),
+                                  nn.ReLU())),
+            ('fc5', nn.Sequential(nn.Dropout(0.5),
+                                  nn.Linear(512, 512),
+                                  nn.ReLU())),
+            ('fc6', nn.Sequential(nn.Dropout(0.5),
+                                  nn.Linear(512, 2)))]))
 
         if model_path is not None:
             if os.path.splitext(model_path)[1] == '.pth':

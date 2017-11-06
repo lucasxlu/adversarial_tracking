@@ -1,6 +1,4 @@
 import sys
-import json
-import numpy as np
 
 sys.path.insert(0, '../tracking')
 from tracking.prepro_seq import *
@@ -43,4 +41,12 @@ def get_bbox_res(result_json_path='../result/result.json'):
 if __name__ == '__main__':
     seq_type, img_list, gt, init_bbox = load_seq('../tracking/options.json')
     res = get_bbox_res()
-    print(eval_success_rate(gt, res))
+    print('*' * 100)
+    print('success rate is %f' % eval_success_rate(gt, res))
+    print('*' * 100)
+
+    print('\n')
+
+    print('*' * 100)
+    print('center pixel error is %d' % eval_center_pixel(gt, res))
+    print('*' * 100)
