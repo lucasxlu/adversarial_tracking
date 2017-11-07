@@ -124,8 +124,7 @@ class ADNet(nn.Module):
                 run = True
             if run:
                 x = module(x)
-                # if name == 'conv3':
-                if name == 'conv5':
+                if name == 'conv3':
                     x = x.view(x.size(0), -1)
                 if name == out_layer:
                     return x
