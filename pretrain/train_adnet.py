@@ -53,7 +53,7 @@ def train_adnet():
 
     best_prec = 0.
     for i in range(configs['n_cycles']):
-        print("==== Start Cycle %d ====" % (i))
+        print("==== Start Cycle %d ====" % i)
         k_list = np.random.permutation(K)
         prec = np.zeros(K)
         for j, k in enumerate(k_list):
