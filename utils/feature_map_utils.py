@@ -30,20 +30,20 @@ def mask_fm(fm):
     """
     h_parts = 3
     w_parts = 3
-    h, w, c = fm.shape
+    batch, c, h, w = fm.shape
 
     result = []
     # mask = np.zeros([int(h / h_parts), int(w / w_parts), c])
     for i in range(h_parts):
         for j in range(w_parts):
             copy_of_fm = np.copy(fm)
-            copy_of_fm[i * int(h / h_parts): (i + 1) * int(h / h_parts),
-            j * int(w / w_parts): (j + 1) * int(w / w_parts), :] = \
-                np.zeros([int(h / h_parts), int(w / w_parts), c])
+            copy_of_fm[0: batch, 0: c, i * int(h / h_parts): (i + 1) * int(h / h_parts),
+            j * int(w / w_parts): (j + 1) * int(w / w_parts)] = \
+                np.zeros([batch, c, int(h / h_parts), int(w / w_parts)])
             result.append(copy_of_fm)
 
     return result
 
 
 if __name__ == '__main__':
-    print(len(rotate_fm(np.random.rand(20, 20, 10))))
+    pass

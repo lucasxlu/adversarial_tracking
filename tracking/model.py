@@ -1,12 +1,13 @@
 import os
-import scipy.io
-import numpy as np
 from collections import OrderedDict
 
+import scipy.io
+import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.autograd import Variable
-import torch
+
+from utils.feature_map_utils import *
 
 
 def append_params(params, module, prefix):
@@ -125,7 +126,12 @@ class ADNet(nn.Module):
             if run:
                 x = module(x)
                 if name == 'conv3':
-                    x = x.view(x.size(0), -1)
+                    # manipulate feature map here!
+                    r_fm = mask_fm(x.data.cpu().numpy())
+                    x = Variable(torch.FloatTensor(r_fm[int(np.random.rand() * len(r_fm))]).cuda())
+                    x = x.view(x.size(0), -1)  # reshape into a flat feature vector for FC layers input
+
+                    # x = x.view(x.size(0), -1)  # reshape into a flat feature vector for FC layers input
                 if name == out_layer:
                     return x
 
