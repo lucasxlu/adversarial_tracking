@@ -128,10 +128,12 @@ class ADNet(nn.Module):
                 if name == 'conv3':
                     # manipulate feature map here!
                     r_fm = mask_fm(x.data.cpu().numpy())
-                    x = Variable(torch.FloatTensor(r_fm[int(np.random.rand() * len(r_fm))]).cuda())
-                    x = x.view(x.size(0), -1)  # reshape into a flat feature vector for FC layers input
+                    for fm in r_fm:
+                        # x = Variable(torch.FloatTensor(r_fm[int(np.random.rand() * len(r_fm))]).cuda())
+                        x = Variable(torch.FloatTensor(fm).cuda())
+                        x = x.view(x.size(0), -1)  # reshape into a flat feature vector for FC layers input
 
-                    # x = x.view(x.size(0), -1)  # reshape into a flat feature vector for FC layers input
+                        # x = x.view(x.size(0), -1)  # reshape into a flat feature vector for FC layers input
                 if name == out_layer:
                     return x
 

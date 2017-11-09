@@ -11,12 +11,12 @@ def rotate_fm(fm, angle_range=[-30, 30]):
     :return:
     """
     step = 5
-    cols, rows, chs = fm.shape
+    batch, c, h, w = fm.shape
     result = []
 
     for _ in range(angle_range[0], angle_range[1], step):
-        M = cv2.getRotationMatrix2D((cols / 2, rows / 2), _, 1)
-        dst = cv2.warpAffine(fm, M, (cols, rows))
+        M = cv2.getRotationMatrix2D((w / 2, h / 2), _, 1)
+        dst = cv2.warpAffine(np.transpose(fm, [2, 3, 1, 0]), M, (w, h))
         result.append(dst)
 
     return result
@@ -46,4 +46,9 @@ def mask_fm(fm):
 
 
 if __name__ == '__main__':
-    pass
+    input_fm = np.ones([1, 3, 128, 128])
+    # result = rotate_fm(np.transpose(input_fm, [2, 3, 1, 0]))
+    result = rotate_fm(input_fm)
+    cv2.imshow('img', result[0])
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
