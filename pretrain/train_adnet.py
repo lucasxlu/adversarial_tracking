@@ -1,7 +1,7 @@
-import pickle
-import time
-import sys
 import os
+import pickle
+import sys
+import time
 
 import torch.optim as optim
 
