@@ -1,17 +1,15 @@
 """
-preprocess sequence
+pre-process sequence
 """
 import json
 import os
+import sys
 
 import cv2
 import numpy as np
-import torchvision.transforms
-from skimage import io, transform
 
-import torch
-from torch.autograd import Variable
-import torchvision
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir)))
+from utils.config import *
 
 
 def load_seq(option_json_path='./options.json'):
@@ -26,17 +24,20 @@ def load_seq(option_json_path='./options.json'):
     seq_type = sequence['type']
 
     if seq_type == 'OTB':
-        img_list = os.listdir(os.path.join('../dataset/', sequence['type'], sequence['seq_name'], 'img'))
+        img_list = os.listdir(os.path.join(configs['test_seq_base'], sequence['type'], sequence['seq_name'], 'img'))
         img_list.sort()
-        img_list = [os.path.join('../dataset/', sequence['type'], sequence['seq_name'], 'img', _) for _ in img_list]
-        gt = np.loadtxt(os.path.join('../dataset/', sequence['type'], sequence['seq_name'], 'groundtruth_rect.txt'),
-                        delimiter=',')  # groundtruth
+        img_list = [os.path.join(configs['test_seq_base'], sequence['type'], sequence['seq_name'], 'img', _) for _ in
+                    img_list]
+        gt = np.loadtxt(
+            os.path.join(configs['test_seq_base'], sequence['type'], sequence['seq_name'], 'groundtruth_rect.txt'),
+            delimiter=',')  # groundtruth
     elif seq_type == 'VOT':
-        img_list = os.listdir(os.path.join('../dataset/', sequence['type'], sequence['seq_name']))
+        img_list = os.listdir(os.path.join(configs['test_seq_base'], sequence['type'], sequence['seq_name']))
         img_list.sort()
-        img_list = [os.path.join('../dataset/', sequence['type'], sequence['seq_name'], _) for _ in img_list]
-        gt = np.loadtxt(os.path.join('../dataset/', sequence['type'], sequence['seq_name'], 'groundtruth.txt'),
-                        delimiter=',')
+        img_list = [os.path.join(configs['test_seq_base'], sequence['type'], sequence['seq_name'], _) for _ in img_list]
+        gt = np.loadtxt(
+            os.path.join(configs['test_seq_base'], sequence['type'], sequence['seq_name'], 'groundtruth.txt'),
+            delimiter=',')
     else:
         print('Error, unknown benchmark type!')
 
@@ -64,19 +65,6 @@ def draw_sequence(imgs, gts, seq_name):
         # cv2.imshow('image', image)
         # cv2.waitKey(0)
         # cv2.destroyAllWindows()
-
-
-def extract_feature():
-    model = torchvision.models.vgg16(pretrained=True)
-    seq_type, img_list, gt, init_bbox = load_seq()
-    transposed_image = np.transpose(transform.resize(io.imread(img_list[0]), (224, 224, 3)))
-    transposed_image -= np.mean(transposed_image, axis=0)  # mean norm the image data
-    image = torch.from_numpy(transposed_image).type(torch.FloatTensor)
-    if torch.cuda.is_available():
-        model = model.cuda()
-        image = image.cuda()
-
-        print(model.forward(Variable(image.unsqueeze(0))))
 
 
 if __name__ == '__main__':

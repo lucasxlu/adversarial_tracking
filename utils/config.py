@@ -7,6 +7,7 @@ configs['use_gpu'] = True
 configs['init_model_path'] = '/home/lucasx/ModelZoo/imagenet-vgg-m.mat'
 configs['img_home'] = '/media/lucasx/Document/DataSet/CV/Tracking'
 configs['model_path'] = '../models/adnet_vot-otb.pth'
+configs['test_seq_base'] = '/media/lucasx/Document/ComputerVision/tracking/OTB-100'
 
 configs['batch_frames'] = 8
 configs['batch_pos'] = 32
