@@ -3,9 +3,9 @@ import pickle
 
 import numpy as np
 
-seq_home = '../dataset/'
-seqlist_path = 'data/vot-otb.txt'
-output_path = 'data/vot-otb.pkl'
+seq_home = '/media/lucasx/Document/DataSet/CV/Tracking/'
+seqlist_path = '../pretrain/data/vot-otb.txt'
+output_path = '../pretrain/data/vot-otb.pkl'
 
 with open(seqlist_path, 'r') as fp:
     seq_list = fp.read().splitlines()
