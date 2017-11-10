@@ -61,6 +61,8 @@ def draw_sequence(imgs, gts, seq_name):
         pt2 = (int(gts[i][0]) + int(int(gts[i][2])), int(gts[i][1]) + int(int(gts[i][3])))
 
         image = cv2.rectangle(image, pt1, pt2, (0, 0, 255), 2)
+        image = cv2.putText(image, '#%d' % (i + 1), (0, 5), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 2,
+                            cv2.LINE_AA)
         cv2.imwrite(os.path.join(draw_seq_save_dir, imgs[i].split('/')[-1]), image)
         # cv2.imshow('image', image)
         # cv2.waitKey(0)
