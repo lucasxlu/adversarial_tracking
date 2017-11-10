@@ -313,6 +313,9 @@ def run_mdnet(img_list, init_bbox, gt=None, savefig_dir='', display=False):
 if __name__ == "__main__":
     # Generate sequence config
     result_path = '../result/result.json'
+    if not os.path.exists('../result') or not os.path.isdir('../result'):
+        os.makedirs('../result')
+
     seq_type, img_list, gt, init_bbox = load_seq()
 
     # Run tracker
