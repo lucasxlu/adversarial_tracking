@@ -23,7 +23,7 @@ def load_seq(option_json_path='./options.json'):
 
     seq_type = sequence['type']
 
-    if seq_type == 'OTB':
+    if seq_type.startswith('OTB'):
         img_list = os.listdir(os.path.join(configs['test_seq_base'], sequence['type'], sequence['seq_name'], 'img'))
         img_list.sort()
         img_list = [os.path.join(configs['test_seq_base'], sequence['type'], sequence['seq_name'], 'img', _) for _ in
@@ -70,8 +70,11 @@ def draw_sequence(imgs, gts, seq_name):
 if __name__ == '__main__':
     seq_type, img_list, gt, init_bbox = load_seq()
 
+    with open('./options.json', mode='rt') as fp:
+        options = json.load(fp)
+        sequence = options['sequence']
+
     with open('../result/result.json', mode='rt') as fp:
         result = json.load(fp)
     predict_bbox = result['res']
-    draw_sequence(img_list, predict_bbox, 'DragonBaby')
-    # extract_feature()
+    draw_sequence(img_list, predict_bbox, sequence['seq_name'])
