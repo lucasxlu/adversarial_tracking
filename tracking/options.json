@@ -1,6 +1,6 @@
 {
   "sequence": {
     "type": "OTB50",
-    "seq_name": "Box"
+    "seq_name": ["Soccer"]
   }
 }
