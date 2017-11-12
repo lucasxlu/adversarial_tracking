@@ -24,25 +24,25 @@ def load_seq(option_json_path='./options.json'):
     seq_type = sequence['type']
 
     if seq_type.startswith('OTB'):
-        for each_seq in sequence['seq_name']:
-            img_list = os.listdir(os.path.join(configs['test_seq_base'], sequence['type'], each_seq, 'img'))
-            img_list.sort()
-            img_list = [os.path.join(configs['test_seq_base'], sequence['type'], each_seq, 'img', _) for _ in img_list]
+        img_list = os.listdir(os.path.join(configs['test_seq_base'], sequence['type'], sequence['seq_name'], 'img'))
+        img_list.sort()
+        img_list = [os.path.join(configs['test_seq_base'], sequence['type'], sequence['seq_name'], 'img', _) for _ in
+                    img_list]
 
-            gt_txt_path = os.path.join(configs['test_seq_base'], sequence['type'], each_seq, 'groundtruth_rect.txt')
-            if ',' in open(gt_txt_path, mode='rt').read():
-                gt = np.loadtxt(gt_txt_path, delimiter=',')
-            elif '\t' in open(gt_txt_path, mode='rt').read():
-                gt = np.loadtxt(gt_txt_path, delimiter='\t')
+        gt_txt_path = os.path.join(configs['test_seq_base'], sequence['type'], sequence['seq_name'],
+                                   'groundtruth_rect.txt')
+        if ',' in open(gt_txt_path, mode='rt').read():
+            gt = np.loadtxt(gt_txt_path, delimiter=',')
+        elif '\t' in open(gt_txt_path, mode='rt').read():
+            gt = np.loadtxt(gt_txt_path, delimiter='\t')
 
     elif seq_type == 'VOT':
-        for each_seq in sequence['seq_name']:
-            img_list = os.listdir(os.path.join(configs['test_seq_base'], sequence['type'], each_seq))
-            img_list.sort()
-            img_list = [os.path.join(configs['test_seq_base'], sequence['type'], each_seq, _) for _ in img_list]
-
-            gt_txt_path = os.path.join(configs['test_seq_base'], sequence['type'], each_seq, 'groundtruth.txt')
-            gt = np.loadtxt(gt_txt_path, delimiter=',')
+        img_list = os.listdir(os.path.join(configs['test_seq_base'], sequence['type'], sequence['seq_name']))
+        img_list.sort()
+        img_list = [os.path.join(configs['test_seq_base'], sequence['type'], sequence['seq_name'], _) for _ in img_list]
+        gt = np.loadtxt(
+            os.path.join(configs['test_seq_base'], sequence['type'], sequence['seq_name'], 'groundtruth.txt'),
+            delimiter=',')
     else:
         print('Error, unknown benchmark type!')
 

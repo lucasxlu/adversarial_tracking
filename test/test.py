@@ -27,13 +27,10 @@ def rotate_fm(fm, angle_range=[-30, 30]):
 
 
 if __name__ == '__main__':
-    if ',' in open('test.txt').read():
-        li = np.loadtxt('test.txt', delimiter=',')
-        print(li)
-    elif '\t' in open('test.txt').read():
-        li = np.loadtxt('test.txt', delimiter='\t')
-        print(li)
-    # image = cv2.imread('/home/lucasx/Documents/talor.jpg')
-    # fm = np.array([4, 3, None, None])
-    # fm[0][:][:][:] = image
-    # cv2.imshow('image', fm[0])
+    image = cv2.imread('/home/lucasx/Documents/talor.jpg')
+    fm = np.ones([4, 3, 1024, 1024])
+    fm[0] = np.transpose(image, [2, 0, 1])
+    cv2.imshow('image', np.transpose(fm[0], [1, 2, 0]))
+    # cv2.imshow('image', np.transpose(fm, [2, 3, 1, 0])[0])
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
