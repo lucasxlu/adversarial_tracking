@@ -52,8 +52,8 @@ def train_adnet():
     optimizer = set_optimizer(model, configs['lr_init'])
 
     best_prec = 0.
-    for i in range(configs['n_cycles']):
-        print("==== Start Cycle %d ====" % i)
+    for i in range(configs['n_epoch']):
+        print("==== Start Epoch %d ====" % i)
         k_list = np.random.permutation(K)
         prec = np.zeros(K)
         for j, k in enumerate(k_list):
@@ -67,8 +67,8 @@ def train_adnet():
                 pos_regions = pos_regions.cuda()
                 neg_regions = neg_regions.cuda()
 
-            pos_score = model(pos_regions)
-            neg_score = model(neg_regions)
+            pos_score = model.forward(pos_regions)
+            neg_score = model.forward(neg_regions)
 
             loss = criterion(pos_score, neg_score)
             model.zero_grad()

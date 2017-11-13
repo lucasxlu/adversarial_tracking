@@ -26,11 +26,41 @@ def rotate_fm(fm, angle_range=[-30, 30]):
     return result
 
 
+def blur_fm(fm):
+    h_parts = 3
+    w_parts = 3
+    batch, c, h, w = fm.shape
+
+    filter = np.zeros([c, h, w])
+
+    result = []
+    for i in range(h_parts):
+        for j in range(w_parts):
+            copy_of_fm = np.copy(fm)
+            copy_of_fm[0: batch, 0: c, i * int(h / h_parts): (i + 1) * int(h / h_parts),
+            j * int(w / w_parts): (j + 1) * int(w / w_parts)] *= \
+                np.ones([batch, c, int(h / h_parts), int(w / w_parts)])
+            result.append(copy_of_fm)
+
+    return result
+
+
 if __name__ == '__main__':
+    img = cv2.imread('/home/lucasx/Documents/talor.jpg')
+    fm = np.zeros([1, 3, 1024, 1024])
+    fm[0] = np.transpose(img, [2, 0, 1])
+    result = blur_fm(fm)
+    new_img = np.transpose(result[1][0], [1, 2, 0])
+    cv2.imwrite('./new_img.jpg', new_img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+    """
     image = cv2.imread('/home/lucasx/Documents/talor.jpg')
     fm = np.ones([4, 3, 1024, 1024])
     fm[0] = np.transpose(image, [2, 0, 1])
-    cv2.imshow('image', np.transpose(fm[0], [1, 2, 0]))
-    # cv2.imshow('image', np.transpose(fm, [2, 3, 1, 0])[0])
+    new_img = np.transpose(fm[0], [1, 2, 0])
+    cv2.imshow('image', new_img)
+    cv2.imwrite('./new_img.jpg', new_img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
+    """

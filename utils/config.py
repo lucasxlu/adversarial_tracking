@@ -26,7 +26,7 @@ configs['momentum'] = 0.9
 configs['grad_clip'] = 10
 configs['ft_layers'] = ['conv', 'fc']
 configs['lr_mult'] = {'fc': 10}
-configs['n_cycles'] = 50
+configs['n_epoch'] = 50
 
 configs['n_bbreg'] = 1000
 configs['overlap_bbreg'] = [0.6, 1]
