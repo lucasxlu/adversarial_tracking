@@ -1,6 +1,6 @@
 {
   "sequence": {
     "type": "OTB100",
-    "seq_name": "MountainBike"
+    "seq_names": ["MountainBike", "Bolt2", "Bird2"]
   }
 }

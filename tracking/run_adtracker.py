@@ -312,18 +312,18 @@ def run_mdnet(img_list, init_bbox, gt=None, savefig_dir='', display=False):
 
 if __name__ == "__main__":
     # Generate sequence config
-    result_path = '../result/result.json'
     if not os.path.exists('../result') or not os.path.isdir('../result'):
         os.makedirs('../result')
+    result = load_seq()
 
-    seq_type, img_list, gt, init_bbox = load_seq()
+    for _ in result:
+        # Run tracker
+        result_path = '../result/result_%s.json' % _[-1]
+        result, result_bb, fps = run_mdnet(_[1], _[3], gt=_[2], display=False)
 
-    # Run tracker
-    result, result_bb, fps = run_mdnet(img_list, init_bbox, gt=gt, display=False)
-
-    # Save result
-    res = {}
-    res['res'] = result_bb.round().tolist()
-    res['type'] = 'rect'
-    res['fps'] = fps
-    json.dump(res, open(result_path, 'w'), indent=2)
+        # Save result
+        res = {}
+        res['res'] = result_bb.round().tolist()
+        res['type'] = 'rect'
+        res['fps'] = fps
+        json.dump(res, open(result_path, 'w'), indent=2)

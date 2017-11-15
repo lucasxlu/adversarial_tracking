@@ -46,7 +46,7 @@ configs['batch_neg_cand'] = 1024
 
 configs['trans_f'] = 0.6
 configs['scale_f'] = 1.05
-configs['trans_f_expand'] = 1.5
+configs['trans_f_expand'] = 2
 configs['n_samples'] = 256
 
 configs['n_pos_update'] = 50

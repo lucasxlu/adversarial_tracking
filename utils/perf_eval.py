@@ -32,7 +32,8 @@ def eval_success_rate(gt_list, res_list):
     return success_num / len(gt_list)
 
 
-def get_bbox_res(result_json_path='../result/result.json'):
+def get_bbox_res(seq_name):
+    result_json_path = '../result/result_%s.json' % seq_name
     with open(result_json_path, mode='rt') as f:
         res = json.load(f)['res']
 
@@ -40,14 +41,16 @@ def get_bbox_res(result_json_path='../result/result.json'):
 
 
 if __name__ == '__main__':
-    seq_type, img_list, gt, init_bbox = load_seq('../tracking/options.json')
-    res = get_bbox_res()
-    print('*' * 100)
-    print('success rate is %f' % eval_success_rate(gt, res))
-    print('*' * 100)
+    result = load_seq('../tracking/options.json')
 
-    print('\n')
+    for _ in result:
+        res = get_bbox_res(_[-1])
+        print('*' * 100)
+        print('success rate is %f' % eval_success_rate(_[2], res))
+        print('*' * 100)
 
-    print('*' * 100)
-    print('center pixel error is %d' % eval_center_pixel(gt, res))
-    print('*' * 100)
+        print('\n')
+
+        print('*' * 100)
+        print('center pixel error is %d' % eval_center_pixel(_[2], res))
+        print('*' * 100)

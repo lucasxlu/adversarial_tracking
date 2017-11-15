@@ -23,32 +23,40 @@ def load_seq(option_json_path='./options.json'):
 
     seq_type = sequence['type']
 
+    result = []
+
     if seq_type.startswith('OTB'):
-        img_list = os.listdir(os.path.join(configs['test_seq_base'], sequence['type'], sequence['seq_name'], 'img'))
-        img_list.sort()
-        img_list = [os.path.join(configs['test_seq_base'], sequence['type'], sequence['seq_name'], 'img', _) for _ in
-                    img_list]
+        for seq_name in sequence['seq_names']:
+            img_list = os.listdir(os.path.join(configs['test_seq_base'], sequence['type'], seq_name, 'img'))
+            img_list.sort()
+            img_list = [os.path.join(configs['test_seq_base'], sequence['type'], seq_name, 'img', _) for _ in
+                        img_list]
 
-        gt_txt_path = os.path.join(configs['test_seq_base'], sequence['type'], sequence['seq_name'],
-                                   'groundtruth_rect.txt')
-        if ',' in open(gt_txt_path, mode='rt').read():
-            gt = np.loadtxt(gt_txt_path, delimiter=',')
-        elif '\t' in open(gt_txt_path, mode='rt').read():
-            gt = np.loadtxt(gt_txt_path, delimiter='\t')
+            gt_txt_path = os.path.join(configs['test_seq_base'], sequence['type'], seq_name, 'groundtruth_rect.txt')
+            if ',' in open(gt_txt_path, mode='rt').read():
+                gt = np.loadtxt(gt_txt_path, delimiter=',')
+            elif '\t' in open(gt_txt_path, mode='rt').read():
+                gt = np.loadtxt(gt_txt_path, delimiter='\t')
 
-    elif seq_type == 'VOT':
-        img_list = os.listdir(os.path.join(configs['test_seq_base'], sequence['type'], sequence['seq_name']))
-        img_list.sort()
-        img_list = [os.path.join(configs['test_seq_base'], sequence['type'], sequence['seq_name'], _) for _ in img_list]
-        gt = np.loadtxt(
-            os.path.join(configs['test_seq_base'], sequence['type'], sequence['seq_name'], 'groundtruth.txt'),
-            delimiter=',')
+            init_bbox = gt[0]
+            result.append([seq_type, img_list, gt, init_bbox, seq_name])
+
+    elif seq_type.startswith('VOT'):
+        for seq_name in sequence['seq_names']:
+            img_list = os.listdir(os.path.join(configs['test_seq_base'], sequence['type'], sequence['seq_name']))
+            img_list.sort()
+            img_list = [os.path.join(configs['test_seq_base'], sequence['type'], sequence['seq_name'], _) for _ in
+                        img_list]
+            gt = np.loadtxt(
+                os.path.join(configs['test_seq_base'], sequence['type'], sequence['seq_name'], 'groundtruth.txt'),
+                delimiter=',')
+
+            init_bbox = gt[0]
+            result.append([seq_type, img_list, gt, init_bbox, seq_name])
     else:
         print('Error, unknown benchmark type!')
 
-    init_bbox = gt[0]
-
-    return seq_type, img_list, gt, init_bbox
+    return result
 
 
 def draw_sequence(imgs, gts, seq_name):
@@ -75,13 +83,13 @@ def draw_sequence(imgs, gts, seq_name):
 
 
 if __name__ == '__main__':
-    seq_type, img_list, gt, init_bbox = load_seq()
+    result = load_seq()
+    print(result)
 
-    with open('./options.json', mode='rt') as fp:
-        options = json.load(fp)
-        sequence = options['sequence']
-
-    with open('../result/result.json', mode='rt') as fp:
-        result = json.load(fp)
-    predict_bbox = result['res']
-    draw_sequence(img_list, predict_bbox, sequence['seq_name'])
+    """
+    for _ in result:
+        with open('../result/result_%s.json' % _[-1], mode='rt') as fp:
+            result = json.load(fp)
+        predict_bbox = result['res']
+        draw_sequence(_[1], predict_bbox, _[-1])
+    """
