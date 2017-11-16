@@ -45,28 +45,20 @@ class LRN(nn.Module):
         return x
 
 
+class BatchNorm(nn.Module):
+    def __init__(self):
+        super(BatchNorm, self).__init__()
+
+    def forward(self, x):
+        mean = torch.mean(x)
+        var = torch.var(x)
+
+        return F.batch_norm(x, running_mean=mean, running_var=var)
+
+
 class ADNet(nn.Module):
     def __init__(self, model_path=None):
         super(ADNet, self).__init__()
-        # self.layers = nn.Sequential(OrderedDict([
-        #     ('conv1', nn.Sequential(nn.Conv2d(3, 96, kernel_size=7, stride=2),
-        #                             nn.ReLU(),
-        #                             # LRN(),
-        #                             nn.MaxPool2d(kernel_size=3, stride=2))),
-        #     ('conv2', nn.Sequential(nn.Conv2d(96, 256, kernel_size=5, stride=2),
-        #                             nn.ReLU(),
-        #                             # LRN(),
-        #                             nn.MaxPool2d(kernel_size=3, stride=2))),
-        #     ('conv3', nn.Sequential(nn.Conv2d(256, 512, kernel_size=3, stride=1),
-        #                             nn.ReLU())),
-        #     ('conv4', nn.Sequential(nn.Conv2d(512, 1024, kernel_size=2, stride=1),
-        #                             nn.ReLU())),
-        #     ('conv5', nn.Sequential(nn.Conv2d(1024, 512, kernel_size=1, stride=1),
-        #                             nn.ReLU(),
-        #                             LRN(),
-        #                             nn.MaxPool2d(kernel_size=2, stride=1))),
-        #     ('fc6', nn.Sequential(nn.Dropout(0.5),
-        #                           nn.Linear(512, 2)))]))
 
         self.layers = nn.Sequential(OrderedDict([
             ('conv1', nn.Sequential(nn.Conv2d(3, 96, kernel_size=7, stride=2),
@@ -80,12 +72,16 @@ class ADNet(nn.Module):
             ('conv3', nn.Sequential(nn.Conv2d(256, 512, kernel_size=3, stride=1),
                                     nn.ReLU())),
             ('fc4', nn.Sequential(nn.Dropout(0.5),
-                                  nn.Linear(512 * 3 * 3, 512),
+                                  # nn.Linear(512 * 3 * 3, 512),
+                                  nn.Linear(512 * 3 * 3 + 256 * 5 * 5, 512),
+                                  # BatchNorm(),
                                   nn.ReLU())),
             ('fc5', nn.Sequential(nn.Dropout(0.5),
                                   nn.Linear(512, 512),
+                                  # BatchNorm(),
                                   nn.ReLU())),
             ('fc6', nn.Sequential(nn.Dropout(0.5),
+                                  # BatchNorm(),
                                   nn.Linear(512, 2)))]))
 
         if model_path is not None:
@@ -125,6 +121,9 @@ class ADNet(nn.Module):
                 run = True
             if run:
                 x = module(x)
+                if name == "conv2":
+                    conv2_ft = x.view(x.size(0), -1)
+
                 if name == 'conv3':
                     # manipulate feature map here!
                     r_fm = mask_fm(x.data.cpu().numpy())
@@ -133,7 +132,9 @@ class ADNet(nn.Module):
                         x = Variable(torch.FloatTensor(fm).cuda())
                         x = x.view(x.size(0), -1)  # reshape into a flat feature vector for FC layers input
 
-                        # x = x.view(x.size(0), -1)  # reshape into a flat feature vector for FC layers input
+                        x = np.concatenate((conv2_ft.data.cpu().numpy(), x.data.cpu().numpy()), axis=1)
+                        x = Variable(torch.FloatTensor(x).cuda())  # concatenate conv2 and conv3 features
+
                 if name == out_layer:
                     return x
 

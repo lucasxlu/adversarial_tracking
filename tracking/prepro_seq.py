@@ -86,10 +86,8 @@ if __name__ == '__main__':
     result = load_seq()
     print(result)
 
-    """
     for _ in result:
         with open('../result/result_%s.json' % _[-1], mode='rt') as fp:
             result = json.load(fp)
         predict_bbox = result['res']
         draw_sequence(_[1], predict_bbox, _[-1])
-    """
