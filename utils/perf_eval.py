@@ -1,6 +1,8 @@
 import sys
 import os
 
+import pandas as pd
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir)))
 from tracking.prepro_seq import *
 from utils.calculator import *
@@ -43,14 +45,15 @@ def get_bbox_res(seq_name):
 if __name__ == '__main__':
     result = load_seq('../tracking/options.json')
 
+    performance = []
     for _ in result:
         res = get_bbox_res(_[-1])
         print('*' * 100)
+        print(_[-1])
         print('success rate is %f' % eval_success_rate(_[2], res))
-        print('*' * 100)
-
-        print('\n')
-
-        print('*' * 100)
         print('center pixel error is %d' % eval_center_pixel(_[2], res))
+        performance.append([_[-1], eval_success_rate(_[2], res), eval_center_pixel(_[2], res)])
         print('*' * 100)
+
+    df = pd.DataFrame(performance, columns=['sequence', 'success_rate', 'center_pixel'])
+    df.to_excel('./performance_eval.xlsx', index=False, sheet_name='performance')
