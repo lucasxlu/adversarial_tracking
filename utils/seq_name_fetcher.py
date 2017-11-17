@@ -6,9 +6,10 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardi
 from utils.config import *
 
 if __name__ == '__main__':
-    otb50_dir = configs['test_seq_base']
+    option = {"sequence": {"type": "OTB100", "seq_names": None}}
 
-    option = {"sequence": {"type": "OTB50", "seq_names": None}}
+    otb50_dir = os.path.join(configs['test_seq_base'], option['sequence']['type'])
+
 
     seq_name_list = []
     for _ in os.listdir(otb50_dir):
