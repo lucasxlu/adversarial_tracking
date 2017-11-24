@@ -9,9 +9,9 @@ configs['img_home'] = '/media/lucasx/Document/DataSet/CV/Tracking'
 configs['model_path'] = '../models/adnet_vot-otb.pth'
 configs['test_seq_base'] = '/media/lucasx/Document/DataSet/CV/Tracking/'
 
-configs['batch_frames'] = 8
-configs['batch_pos'] = 32
-configs['batch_neg'] = 96
+configs['batch_frames'] = 1#8
+configs['batch_pos'] = 4#32
+configs['batch_neg'] = 12#96
 
 configs['overlap_pos'] = [0.7, 1]
 configs['overlap_neg'] = [0, 0.5]
