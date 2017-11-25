@@ -11,7 +11,7 @@ def gen_video(seq_dir):
     # Define the codec and create VideoWriter object
     print('start to generate video from %s' % seq_dir)
     fourcc = cv2.VideoWriter_fourcc(*'XVID')
-    out = cv2.VideoWriter('Skiing.avi', fourcc, 24, (640, 360))
+    out = cv2.VideoWriter('%s.avi' % seq_dir.split('/')[-1], fourcc, 24, (640, 360))
     filelist = [os.path.join(seq_dir, _) for _ in os.listdir(seq_dir)]
     filelist = np.sort(np.array(filelist)).tolist()
 
@@ -26,4 +26,4 @@ def gen_video(seq_dir):
 
 
 if __name__ == '__main__':
-    gen_video('/home/lucasx/PycharmProjects/adversarial_tracking/result/Skiing')
+    gen_video('/home/lucasx/PycharmProjects/adversarial_tracking/result/DragonBaby')
